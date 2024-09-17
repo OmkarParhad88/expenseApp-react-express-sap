@@ -37,7 +37,7 @@ const ListDoc = () => {
   return (
     <>
       <AnalyticalTable
-        style={{ width: "100%" }}
+        style={{ marginLeft: "1rem", width: "100% !important" }}
 
         columns={[
           {
@@ -55,9 +55,10 @@ const ListDoc = () => {
             accessor: 'friend.name'
           },
           {
-
             hAlign: 'End',
-            Header: "Expense Amount"
+            Header: "Expense Amount",
+            // width: 150
+
 
           },
           {
@@ -99,9 +100,7 @@ const ListDoc = () => {
         onSort={() => { }}
         onTableScroll={() => { }}
         rowHeight={60}
-        selectedRowIds={{
-          3: true
-        }}
+        selectedRowIds={{ 3: true }}
         // selectionMode="Multiple"
         renderRowSubComponent={renderRowSubComponent}
         scaleWidthMode="Auto"

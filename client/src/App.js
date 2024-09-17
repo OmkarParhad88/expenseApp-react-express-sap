@@ -32,8 +32,8 @@ function App() {
 
 
           <Routes>
-            <Route path="/"
-              element={<FlexBox
+
+            <FlexBox
                 direction="Column"
                 justifyContent="Start"
                 style={{ height: "100%", width: "100%" }}
@@ -58,8 +58,8 @@ function App() {
                     Report
                   </Button>
                 </FlexBox>
-              </FlexBox>} />
-            <Route path="/document/create" element={<DocUploder />} />
+            </FlexBox>
+
 
           </Routes>
         </FlexBox>

@@ -12,85 +12,63 @@ const UploadState = {
   Complete: 'Complete',
 };
 const DocUploder = () => {
-  const [children, setChildren] = useState([
-    <UploadCollectionItem
-      key={'0'}
-      file={null}
-      fileName={'file-name.txt'}
-      uploadState={UploadState.Ready}
-      thumbnail={
-        <img src="https://raw.githubusercontent.com/SAP/ui5-webcomponents/main/docs/images/UI5_logo_water.png" />
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const fileInputRef = useRef(null);
+
+  // Function to handle file input change
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const fileType = file.type;
+      if (fileType === 'image/jpeg' || fileType === 'image/png' || fileType === 'image/jpeg') {
+        setSelectedFile(file);
+        setErrorMessage('');
+      } else {
+        setErrorMessage('Please select corret file type(png,jpg,jpeg)');
       }
-    >
-      <Text>Uploaded by: Susanne Schmitt · Uploaded On: 2019-04-20</Text>
-    </UploadCollectionItem>
-  ]);
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.file;
-
-    setChildren((prev) => [
-      ...prev,
-      <UploadCollectionItem
-        key={file.name}
-        file={file}
-        fileName={file.name}
-        uploadState={UploadState.Ready}
-        thumbnail={<Icon name={document} />}
-      >
-        <Text>{`Last modified: ${file.lastModifiedDate} · Size: ${(file.size / 1000).toFixed(2)}KB`}</Text>
-      </UploadCollectionItem>
-    ]);
-
+    }
   };
-  const simulateUpload = () => {
-    if (children.length > 0) {
-      Children.forEach(children, (child, index) => {
-        if (child.props.uploadState === UploadState.Ready) {
-          let progress = 0;
-          const recTimeout = () => {
-            setTimeout(
-              () => {
-                progress += Math.floor(Math.random() * 4) + 1;
-                setChildren((prev) => {
-                  const updatedChildren = [...prev];
-                  updatedChildren[index] = cloneElement(prev[index], {
-                    uploadState: UploadState.Uploading,
-                    progress: Math.min(progress, 100)
-                  });
-                  return updatedChildren;
-                });
-                if (progress < 100) {
-                  recTimeout();
-                } else {
-                  setChildren((prev) => {
-                    const updatedChildren = [...prev];
-                    updatedChildren[index] = cloneElement(prev[index], {
-                      uploadState: UploadState.Complete
-                    });
-                    return updatedChildren;
-                  });
-                }
-              },
-              Math.floor(Math.random() * (1000 - 100 + 1)) + 100
-            );
-          };
-          recTimeout();
-        }
-      });
+
+  // Function to handle file upload
+  const handleFileUpload = async () => {
+    if (!selectedFile) {
+      setErrorMessage('No file selected.');
+      return;
     }
 
-  }
-  return (
-    <FlexBox
-      direction="Column"
-      style={{ width: "100%", height: "90%" }}
-    >
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('options=application/json', { "schemaName": "SAP_invoice_schema", "clientId": "default" });
 
-      <Link to="/">
-        <Button >Cancel</Button>
-      </Link>
-    </FlexBox>
+    await axios.post('http://localhost:5000/documnet/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    }).then(response => {
+
+      console.log('File uploaded successfully:', response.data);
+    }).catch(error => {
+      console.error('Error uploading the file:', error);
+    })
+  }
+  const handleCancel = () => {
+    setSelectedFile(null); // Clear selected file
+    fileInputRef.current.value = ''; // Reset file input field
+  };
+  return (
+    <>
+      <FlexBox
+        alignItems='Center'
+        height='100%'
+      >
+
+        <input type="file" accept=".jpg,.png,.jpeg" onChange={handleFileChange} ref={fileInputRef} />
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        <Button onClick={handleFileUpload}>Upload</Button>
+        <Button icon="cencel" type="button" onClick={handleCancel} >cancel</Button>
+      </FlexBox>
+    </>
   )
 }
 
