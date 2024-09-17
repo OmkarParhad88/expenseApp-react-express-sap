@@ -1,0 +1,39 @@
+[
+  {
+    "age": 75,
+    "friend": {
+      "age": 21,
+      "name": "Shamal"
+    },
+    "name": "Sophie Keller",
+    "status": "Indication03"
+  },
+  {
+    "age": 40,
+    "friend": {
+      "age": 66,
+      "name": "Rosemarie Callahan"
+    },
+    "name": "Lindsey Winters",
+    "status": "Critical"
+  },
+  {
+    "age": 49,
+    "friend": {
+      "age": 55,
+      "name": "Katina Gillespie"
+    },
+    "name": "Lowe Cash",
+    "status": "Negative"
+  },
+  {
+    "age": 61,
+    "friend": {
+      "age": 31,
+      "name": "Juana Wallace"
+    },
+    "name": "Cristina Sosa",
+    "status": "Negative"
+  }]
+
+  
