@@ -10,13 +10,15 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import DocUploder from './components/DocUploder/DocUploder';
+import DocUploder from '../../components/DocUploder/DocUploder';
 
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+
 const DocToolbar = () => {
 
+  // const handleCreate = () => {
 
+  // }
   return (
     <FlexBox
       alignContent="center"
@@ -25,12 +27,13 @@ const DocToolbar = () => {
       maxWidth="100%"
       style={{ padding: "0.7em", gap: "0.5rem" }}
     >
-      <Router>
-        <Routes>
-          <Route path="/document/create" element={<Button onClick={handleFileUpload}>Upload</Button>} />
-        </Routes>
-        <Button icon="refresh">Refresh</Button>
-      </Router>
+      <Routes>
+        <Route path="/document/upload" element={<DocUploder />} />
+      </Routes>
+      <Link to="/document/upload">
+        <Button icon="create">Create</Button>
+      </Link>
+      <Button icon="refresh">Refresh</Button>
     </FlexBox>
   )
 }
