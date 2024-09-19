@@ -3,33 +3,72 @@ const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 const app = express();
-const FormData = require('form-data'); // Ensure FormData is available
+const FormData = require('form-data');
 const axios = require('axios');
-app.use(cors()); // Allow cross-origin requests
-app.use(express.json()); // To parse JSON request bodies
+app.use(cors());
+app.use(express.json());
 
-const storage = multer.memoryStorage(); // Store file in memory, or use diskStorage to save files
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const doxApiUrl = 'https://aiservices-trial-dox.cfapps.us10.hana.ondemand.com/document-information-extraction/v1/document/jobs';
 
-// Route to return "Hello World"
+app.get('/document/data', async (req, res) => {
+  const token = await getAuthToken()
+  await axios.get(`${doxApiUrl}/5acac5c9-ec05-4433-ab48-10a8e3524ce4`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  }).then(response => {
+    const data = response.data;
+
+    const extractData = (data) => {
+      const documentDate = data.extraction.headerFields.find(field => field.name === 'documentDate')?.value;
+      const grossAmount = data.extraction.headerFields.find(field => field.name === 'grossAmount')?.value;
+      const receiverName = data.extraction.headerFields.find(field => field.name === 'receiverName')?.value;
+      const docId = data.id;
+      const documentType = data.documentType;
+      const fileName = data.fileName;
+      const finished = (data.finished).substring(0, 10);
+
+      return {
+        docId,
+        receiverName,
+        documentDate,
+        documentType,
+        fileName,
+        grossAmount,
+        finished
+      };
+    };
+
+    const newObject = extractData(data);
+
+    res.json(newObject)
+  }).catch(error => {
+    console.error('data not availble', error);
+
+  })
+
+
+})
+
 app.post('/document/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
   const file = req.file;
-  // const options = req.body['options=application/json']; // Get the options
-  const options = req.body['options=application/json']; // Get the options
-  console.log(JSON.stringify(options))   // Get the options
-  console.log('Schema Info:', options); // Log the additional data
-  console.log('fileName:', file.originalname); // Log the additional data
 
-  const token = await getAuthToken()
+  const options = req.body['options=application/json'];
+  console.log(JSON.stringify(options))
+  console.log('Schema Info:', options);
+  console.log('fileName:', file.originalname);
+
+
 
   const formData = new FormData();
-  formData.append('file', file.buffer, file.originalname); // Append the file data
-  formData.append('options', JSON.stringify(options)); // Append any additional options
+  formData.append('file', file.buffer, file.originalname);
+  formData.append('options', JSON.stringify(options));
 
   await axios.post(doxApiUrl, formData, {
     headers: {
@@ -37,7 +76,6 @@ app.post('/document/upload', upload.single('file'), async (req, res) => {
       ...formData.getHeaders()
     },
   }).then(response => {
-    // console.log(response.data)
     return res.json(response.data)
   }).catch(error => {
     console.error('Error uploading the file on server:', error);
@@ -55,7 +93,6 @@ app.get('/hello', (req, res) => {
 });
 
 
-// Route to handle text transformation
 app.post('/transform', (req, res) => {
   const { inputText } = req.body;
   if (inputText) {

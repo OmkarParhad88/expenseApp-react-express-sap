@@ -1,63 +1,43 @@
 import {
   AnalyticalTable,
   FlexBox,
-  FlexBoxJustifyContent,
-  FlexBoxAlignItems,
-  FlexBoxDirection,
   Button,
-  Tag,
-  Text,
 } from '@ui5/webcomponents-react';
-// import { AnalyticalTableSubComponentsBehavior } from '@ui5/webcomponents-react';
-import TableData from "../../Data/TableData.json";
+import { useEffect } from 'react';
 
-
-const ListDoc = () => {
-  const renderRowSubComponent = (row) => {
-    if (row.id === '0') {
-      return (
-        <FlexBox
-          style={{ backgroundColor: 'lightblue', height: '300px' }}
-          justifyContent={FlexBoxJustifyContent.Center}
-          alignItems={FlexBoxAlignItems.Center}
-          direction={FlexBoxDirection.Column}
-        >
-          <Tag>height: 300px</Tag>
-          <Text>This subcomponent will only be displayed below the first row.</Text>
-          <hr />
-          <Text>
-            The button below is rendered with `data-subcomponent-active-element` attribute to ensure consistent focus
-            behavior
-          </Text>
-          <Button data-subcomponent-active-element>Click</Button>
-        </FlexBox>
-      );
-    }
-  };
+const ListDoc = ({ data }) => {
+  useEffect(() => {
+    console.log(data)
+  }, [data]);
   return (
     <>
       <AnalyticalTable
         style={{ marginLeft: "1rem", width: "100% !important" }}
-
         columns={[
           {
-            Header: 'Expense Type',
-            accessor: 'name',
+            Header: 'DocumentDate',
+            accessor: 'documentDate',
+            headerTooltip: 'Full Name'
+          },
+          {
+            Header: 'DocumentType',
+            accessor: 'documentType',
             headerTooltip: 'Full Name'
           },
           {
             Header: 'Date',
-            accessor: 'age',
+            accessor: 'finished',
             hAlign: 'End'
           },
           {
             Header: 'Paid By',
-            accessor: 'friend.name'
+            accessor: 'receiverName',
+            hAlign: 'End'
           },
           {
-            hAlign: 'End',
-            Header: "Expense Amount",
-            // width: 150
+            Header: "Amount",
+            accessor: 'grossAmount',
+            hAlign: 'End'
 
 
           },
@@ -85,7 +65,7 @@ const ListDoc = () => {
             width: 100
           }
         ]}
-        data={TableData}
+        data={data}
         filterable
         groupBy={[]}
         groupable
@@ -102,7 +82,7 @@ const ListDoc = () => {
         rowHeight={60}
         selectedRowIds={{ 3: true }}
         // selectionMode="Multiple"
-        renderRowSubComponent={renderRowSubComponent}
+        // renderRowSubComponent={renderRowSubComponent}
         scaleWidthMode="Auto"
       />
 

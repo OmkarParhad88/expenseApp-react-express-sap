@@ -15,8 +15,21 @@ import {
 import DocUploder from './components/DocUploder/DocUploder';
 function App() {
   const [openState, setOpenState] = useState(true)
+  const [data, setData] = useState([{
+    "docId": "5acac5c9-ec05-4433-ab48-10a8e3524ce4",
+    "receiverName": "omkar MAHESH PARAB",
+    "documentDate": "2023-05-15",
+    "documentType": "invoooooice",
+    "fileName": "IMG20230515154957.jpg",
+    "grossAmount": 885.94,
+    "finished": "2024-09-18"
+  }])
   const handleCencel = (e) => {
     setOpenState(e)
+  }
+  const fetchData = (e) => {
+    setData([e])
+    console.log(e)
   }
   return (
     <div className="App">
@@ -24,7 +37,6 @@ function App() {
         {/* <DataFatch /> */}
         <Header />
         <FlexBox
-          // alignItems="Center"
           direction="Row"
           justifyContent="Space-between"
           wrap="NoWrap"
@@ -36,9 +48,9 @@ function App() {
             justifyContent="Start"
             style={{ height: "100%", width: "100%" }}
           >
-            <DocToolbar />
+            <DocToolbar refreshData={fetchData} />
 
-            <ListDoc />
+            <ListDoc data={data} />
             <FlexBox
               direction="Row"
               justifyContent="End"

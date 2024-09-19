@@ -1,11 +1,8 @@
 import {
-  UploadCollection, UploadCollectionItem, Button, FlexBox,
-  Text, Title, Icon, FileUploader
+  Button, FlexBox
 } from '@ui5/webcomponents-react';
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route, Link
+  Link
 } from "react-router-dom";
 import axios from 'axios';
 import { useState, useRef } from 'react';
