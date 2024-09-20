@@ -1,13 +1,19 @@
+
 import { useState, useRef } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useNavigate
+} from "react-router-dom";
 import {
   Button,
   FlexBox
 } from '@ui5/webcomponents-react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from "react-router-dom";
 import axios from 'axios';
 
-const DocUploder = () => {
+const DocUploder = ({ refreshData }) => {
   const navigate = useNavigate();
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -15,6 +21,17 @@ const DocUploder = () => {
   const [cancel, setCancel] = useState(false);
 
   const fileInputRef = useRef(null);
+
+  const refreshBtn = () => {
+    axios.get('http://localhost:5000/document/data')
+      .then((response) => {
+        console.log('Refresh successful')
+        refreshData(response.data)
+      })
+      .catch(error => {
+        console.error('Refresh failed', error)
+      })
+  }
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -62,9 +79,11 @@ const DocUploder = () => {
   return (
     <>
       <FlexBox
-        alignItems='Center'
+        alignContent="center"
+        direction="Row"
+        justifyContent="End"
         height='100%'
-        style={{ gap: "0.5rem" }}
+        style={{ padding: "0.7em", gap: "0.5rem" }}
       >
         <input type="file" accept=".jpg,.png,.jpeg" onChange={handleFileChange} ref={fileInputRef} />
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
@@ -72,6 +91,14 @@ const DocUploder = () => {
         <Link to="/">
           <Button icon="cancel" type="button" onClick={handleCancel} >Cancel</Button>
         </Link>
+
+        <Routes>
+          <Route path="/document/upload" element={<DocUploder />} />
+        </Routes>
+        <Link to="/document/upload">
+          <Button icon="create">Create</Button>
+        </Link>
+        <Button icon="refresh" onClick={refreshBtn}>Refresh</Button>
       </FlexBox> </>
   )
 }

@@ -48,7 +48,7 @@ function App() {
             justifyContent="Start"
             style={{ height: "100%", width: "100%" }}
           >
-            <DocToolbar refreshData={fetchData} />
+            <DocUploder refreshData={fetchData} /> 
             <ListDoc data={data} />
             <FlexBox
               direction="Row"
