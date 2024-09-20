@@ -62,7 +62,6 @@ app.post('/document/upload', upload.single('file'), async (req, res) => {
   const token = await getAuthToken()
 
   const formData = new FormData();
-  // const blob = new Blob([file], { type: file.type });
   formData.append('file', file.buffer, file.originalname);
   formData.append('options', JSON.stringify(options));
   try {

@@ -6,18 +6,17 @@ function TestConn() {
   const [inputText, setInputText] = useState('');
   const [transformedText, setTransformedText] = useState('');
 
-  // Function to fetch "Hello World" from backend
   const fetchMessage = () => {
-    axios.get('http://localhost:5000/hello')
-      .then(response => {
+    axios
+      .get("http://localhost:5000/hello")
+      .then((response) => {
         setMessage(response.data);
       })
-      .catch(error => {
-        console.error('Error fetching message:', error);
+      .catch((error) => {
+        console.error("Error fetching message:", error);
       });
   };
 
-  // Function to send text to backend and transform it
   const handleTransform = () => {
     axios.post('http://localhost:5000/transform', { inputText })
       .then(response => {

@@ -1,8 +1,6 @@
 import React from 'react'
 import { ShellBar } from '@ui5/webcomponents-react';
-import {
-  Avatar
-} from '@ui5/webcomponents-react';
+import { Avatar} from '@ui5/webcomponents-react';
 const Header = () => {
   return (
     <div>
@@ -15,9 +13,7 @@ const Header = () => {
             size="S"
           />
         }
-
       >
-       
       </ShellBar>
     </div>
   )

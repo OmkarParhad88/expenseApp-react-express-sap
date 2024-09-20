@@ -1,17 +1,15 @@
-// import { useState, useRef } from 'react'
 import {
   FlexBox,
   Button,
 } from '@ui5/webcomponents-react';
-import axios from 'axios';
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  Link
 } from "react-router-dom";
+import axios from 'axios';
 import DocUploder from '../../components/DocUploder/DocUploder';
-
-import { Link } from 'react-router-dom';
 
 const DocToolbar = ({ refreshData }) => {
 
@@ -19,7 +17,6 @@ const DocToolbar = ({ refreshData }) => {
     axios.get('http://localhost:5000/document/data')
       .then((response) => {
         console.log('Refresh successful')
-        // console.log(response.data)
         refreshData(response.data)
       })
       .catch(error => {

@@ -20,10 +20,9 @@ const DocData = () => {
     formData.append('file', file);
 
     try {
-      // Call CAPM backend for document extraction
       const response = await axios.post('http://localhost:4004/document-extraction/DocumentExtractionService/extractDocument', {
         file: file,
-        fileType: 'jpg', // or another type
+        fileType: 'jpg', 
       });
       setResult(response.data);
     } catch (error) {

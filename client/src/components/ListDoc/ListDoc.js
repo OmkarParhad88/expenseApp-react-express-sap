@@ -1,9 +1,9 @@
+import { useEffect } from 'react';
 import {
   AnalyticalTable,
   FlexBox,
   Button,
 } from '@ui5/webcomponents-react';
-import { useEffect } from 'react';
 
 const ListDoc = ({ data }) => {
   useEffect(() => {
@@ -26,7 +26,7 @@ const ListDoc = ({ data }) => {
           },
           {
             Header: 'Date',
-            accessor: 'finished',
+            accessor: 'finished', 
             hAlign: 'End'
           },
           {
@@ -44,9 +44,7 @@ const ListDoc = ({ data }) => {
           {
             Cell: (instance) => {
               const { cell, row, webComponentsReactProperties } = instance;
-              // disable buttons if overlay is active to prevent focus
               const isOverlay = webComponentsReactProperties.showOverlay;
-              // console.log('This is your row data', row.original);
               return (
                 <FlexBox>
                   <Button icon="edit" disabled={isOverlay} />
@@ -55,7 +53,6 @@ const ListDoc = ({ data }) => {
               );
             },
             cellLabel: ({ cell }) => {
-              // `cell.cellLabel` contains the internal `aria-label` of the respective cell
               return `${cell.cellLabel} press TAB to focus active elements inside this cell`;
             },
             Header: 'Actions',
@@ -85,12 +82,8 @@ const ListDoc = ({ data }) => {
         // renderRowSubComponent={renderRowSubComponent}
         scaleWidthMode="Auto"
       />
-
-
-
     </>
   );
-
 }
 
 export default ListDoc

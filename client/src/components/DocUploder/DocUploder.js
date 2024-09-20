@@ -1,21 +1,21 @@
-import {
-  Button, FlexBox
-} from '@ui5/webcomponents-react';
-import {
-  Link
-} from "react-router-dom";
-import axios from 'axios';
 import { useState, useRef } from 'react';
-
+import {
+  Button,
+  FlexBox
+} from '@ui5/webcomponents-react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import axios from 'axios';
 
 const DocUploder = () => {
+  const navigate = useNavigate();
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [cancel, setCancel] = useState(false);
 
   const fileInputRef = useRef(null);
 
-  // Function to handle file input change
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -29,7 +29,6 @@ const DocUploder = () => {
     }
   };
 
-  // Function to handle file upload
   const handleFileUpload = async () => {
     if (!selectedFile) {
       setErrorMessage('No file selected.');
@@ -41,21 +40,22 @@ const DocUploder = () => {
     formData.append("schemaName", "SAP_invoice_schema")
     formData.append("clientId", "default")
 
-
     await axios.post('http://localhost:5000/document/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }
     }).then(response => {
-
-        console.log('File uploaded successfully:', response.data);
-      }).catch(error => {
+      console.log('File uploaded successfully:')
+      handleCancel()
+      navigate('/')
+    }
+    ).catch(error => {
         console.error('Error uploading the file:', error);
       })
   }
   const handleCancel = () => {
-    setSelectedFile(null); // Clear selected file
-    fileInputRef.current.value = ''; // Reset file input field
+    setSelectedFile(null);
+    fileInputRef.current.value = ''; 
     setCancel(true)
 
   };
