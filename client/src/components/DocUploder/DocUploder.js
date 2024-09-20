@@ -37,8 +37,10 @@ const DocUploder = () => {
     }
 
     const formData = new FormData();
-    formData.append('options=application/json', { "schemaName": "SAP_invoice_schema", "clientId": "default" });
-    formData.append('file', selectedFile);
+    formData.append('file', selectedFile)
+    formData.append("schemaName", "SAP_invoice_schema")
+    formData.append("clientId", "default")
+
 
     await axios.post('http://localhost:5000/document/upload', formData, {
       headers: {
@@ -46,10 +48,10 @@ const DocUploder = () => {
       }
     }).then(response => {
 
-      console.log('File uploaded successfully:', response.data);
-    }).catch(error => {
-      console.error('Error uploading the file:', error);
-    })
+        console.log('File uploaded successfully:', response.data);
+      }).catch(error => {
+        console.error('Error uploading the file:', error);
+      })
   }
   const handleCancel = () => {
     setSelectedFile(null); // Clear selected file
