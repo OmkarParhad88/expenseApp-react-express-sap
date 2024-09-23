@@ -12,14 +12,15 @@ import {
   FlexBox
 } from '@ui5/webcomponents-react';
 import axios from 'axios';
+import { dialogSvg } from '@ui5/webcomponents-fiori/dist/illustrations/BeforeSearch.js';
 
 const DocUploder = ({ refreshData }) => {
-  const navigate = useNavigate();
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [cancel, setCancel] = useState(false);
 
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
   const refreshBtn = () => {
@@ -67,12 +68,12 @@ const DocUploder = ({ refreshData }) => {
       navigate('/')
     }
     ).catch(error => {
-        console.error('Error uploading the file:', error);
-      })
+      console.error('Error uploading the file:', error);
+    })
   }
   const handleCancel = () => {
     setSelectedFile(null);
-    fileInputRef.current.value = ''; 
+    fileInputRef.current.value = '';
     setCancel(true)
 
   };
@@ -87,13 +88,13 @@ const DocUploder = ({ refreshData }) => {
       >
         <input type="file" accept=".jpg,.png,.jpeg" onChange={handleFileChange} ref={fileInputRef} />
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-        <Button icon="upload" onClick={handleFileUpload}>Upload</Button>
-        <Link to="/">
-          <Button icon="cancel" type="button" onClick={handleCancel} >Cancel</Button>
-        </Link>
-
         <Routes>
-          <Route path="/document/upload" element={<DocUploder />} />
+          <Route path="/document/upload" element={<div style={{ display: "flex", gap: "0.5rem" }}>
+            <Button icon="upload" onClick={handleFileUpload}>Upload</Button>
+            <Link to="/">
+              <Button icon="cancel" type="button" onClick={handleCancel} >Cancel</Button>
+            </Link>
+          </ div>} />
         </Routes>
         <Link to="/document/upload">
           <Button icon="create">Create</Button>

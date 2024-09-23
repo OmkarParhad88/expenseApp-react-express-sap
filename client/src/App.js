@@ -5,7 +5,7 @@ import './App.css';
 import Header from './components/Header/Header';
 import SideNavigationBar from './components/SideNavigationBar/SideNavigationBar';
 import ListDoc from './components/ListDoc/ListDoc';
-import DocToolbar from './components/DocToolbar/DocToolbar';
+// import DocToolbar from './components/DocToolbar/DocToolbar';
 import { useState } from 'react';
 import {
   BrowserRouter as Router,
