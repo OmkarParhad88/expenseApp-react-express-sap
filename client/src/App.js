@@ -50,7 +50,11 @@ function App() {
             style={{ height: "100%", width: "100%" }}
           >
             <DocUploder refreshData={fetchData} /> 
+            <div className='cards_section'>
+
+
             <Card DocData={data} />
+            </div>
             {/* <ListDoc data={data} /> */}
             <FlexBox
               direction="Row"
