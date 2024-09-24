@@ -11,6 +11,7 @@ import {
   Button,
   FlexBox
 } from '@ui5/webcomponents-react';
+import { Loader } from '@ui5/webcomponents-react-compat';
 import axios from 'axios';
 import { dialogSvg } from '@ui5/webcomponents-fiori/dist/illustrations/BeforeSearch.js';
 
@@ -19,15 +20,19 @@ const DocUploder = ({ refreshData }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [cancel, setCancel] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
   const refreshBtn = () => {
+    setIsLoading(true);
     axios.get('http://localhost:5000/document/data')
       .then((response) => {
         console.log('Refresh successful')
+        console.log(response.data)
         refreshData(response.data)
+        setIsLoading(false);
       })
       .catch(error => {
         console.error('Refresh failed', error)
@@ -48,6 +53,7 @@ const DocUploder = ({ refreshData }) => {
   };
 
   const handleFileUpload = async () => {
+    setIsLoading(true);
     if (!selectedFile) {
       setErrorMessage('No file selected.');
       return;
@@ -65,6 +71,7 @@ const DocUploder = ({ refreshData }) => {
     }).then(response => {
       console.log('File uploaded successfully:')
       handleCancel()
+      setIsLoading(false)
       navigate('/')
     }
     ).catch(error => {
@@ -72,10 +79,10 @@ const DocUploder = ({ refreshData }) => {
     })
   }
   const handleCancel = () => {
+    setIsLoading(false);
     setSelectedFile(null);
     fileInputRef.current.value = '';
     setCancel(true)
-
   };
   return (
     <>
@@ -86,10 +93,11 @@ const DocUploder = ({ refreshData }) => {
         height='100%'
         style={{ padding: "0.7em", gap: "0.5rem" }}
       >
-        <input type="file" accept=".jpg,.png,.jpeg" onChange={handleFileChange} ref={fileInputRef} />
-        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+
         <Routes>
           <Route path="/document/upload" element={<div style={{ display: "flex", gap: "0.5rem" }}>
+            <input type="file" accept=".jpg,.png,.jpeg" onChange={handleFileChange} ref={fileInputRef} />
+            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
             <Button icon="upload" onClick={handleFileUpload}>Upload</Button>
             <Link to="/">
               <Button icon="cancel" type="button" onClick={handleCancel} >Cancel</Button>
@@ -100,7 +108,9 @@ const DocUploder = ({ refreshData }) => {
           <Button icon="create">Create</Button>
         </Link>
         <Button icon="refresh" onClick={refreshBtn}>Refresh</Button>
-      </FlexBox> </>
+      </FlexBox>
+      {isLoading && <Loader progress="60%" type="Indeterminate" />}
+    </>
   )
 }
 

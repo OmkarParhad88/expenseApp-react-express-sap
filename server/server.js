@@ -40,9 +40,11 @@ app.get('/document/data', async (req, res) => {
     },
   }).then(response => {
     const data = response.data;
+    // console.log(data)
     const newObject = extractJobData(data);
 
     res.status(200).json(newObject)
+    // res.status(200).json(data)
 
   }).catch(error => {
     console.error('data not availble', error);

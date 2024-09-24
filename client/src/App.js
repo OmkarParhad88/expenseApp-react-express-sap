@@ -13,9 +13,10 @@ import {
   Route
 } from "react-router-dom";
 import DocUploder from './components/DocUploder/DocUploder';
+import Card from './components/Card/Card';
 function App() {
   const [openState, setOpenState] = useState(true)
-  const [data, setData] = useState([{
+  const [data, setData] = useState({
     "docId": "5acac5c9-ec05-4433-ab48-10a8e3524ce4",
     "receiverName": "omkar MAHESH PARAB",
     "documentDate": "2023-05-15",
@@ -23,12 +24,12 @@ function App() {
     "fileName": "IMG20230515154957.jpg",
     "grossAmount": 885.94,
     "finished": "2024-09-18"
-  }])
+  })
   const handleCencel = (e) => {
     setOpenState(e)
   }
   const fetchData = (e) => {
-    setData([e])
+    setData(e)
     console.log(e)
   }
   return (
@@ -49,7 +50,8 @@ function App() {
             style={{ height: "100%", width: "100%" }}
           >
             <DocUploder refreshData={fetchData} /> 
-            <ListDoc data={data} />
+            <Card DocData={data} />
+            {/* <ListDoc data={data} /> */}
             <FlexBox
               direction="Row"
               justifyContent="End"
