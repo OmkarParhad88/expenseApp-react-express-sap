@@ -1,5 +1,5 @@
 
-import { FlexBox, Button } from '@ui5/webcomponents-react';
+import { FlexBox, Button, BusyIndicator } from '@ui5/webcomponents-react';
 import './App.css';
 // import DataFatch from './components/DataFatch/DataFatch';
 import Header from './components/Header/Header';
@@ -16,17 +16,23 @@ import DocUploder from './components/DocUploder/DocUploder';
 import Card from './components/Card/Card';
 function App() {
   const [openState, setOpenState] = useState(true)
-  const [data, setData] = useState({
-    "docId": "5acac5c9-ec05-4433-ab48-10a8e3524ce4",
-    "receiverName": "omkar MAHESH PARAB",
-    "documentDate": "2023-05-15",
-    "documentType": "invoooooice",
-    "fileName": "IMG20230515154957.jpg",
-    "grossAmount": 885.94,
-    "finished": "2024-09-18"
-  })
+  const [data, setData] = useState(null)
+  const [isData, setIsData] = useState(false)
+
   const handleCencel = (e) => {
     setOpenState(e)
+  }
+
+  const editListItem = (e) => {
+    const parentListItem = e.target.closest('li').id;
+    // console.log(parentListItem)
+    console.log(parentListItem)
+  }
+
+  const deleteListItem = (e) => {
+    const parentListItem = e.target.closest('li').id;
+    // console.log(parentListItem)
+    console.log(parentListItem)
   }
   const fetchData = (e) => {
     setData(e)
@@ -49,12 +55,17 @@ function App() {
             justifyContent="Start"
             style={{ height: "100%", width: "100%" }}
           >
-            <DocUploder refreshData={fetchData} /> 
-            <div className='cards_section'>
+            <DocUploder refreshData={fetchData} />
+            <ul className='cards_section'>
 
+              {data ? (data.map((e) => { return (<Card key={e.docId} DocData={e} editListItem={editListItem} deleteListItem={deleteListItem} />) }))
+                : (<BusyIndicator
+                  active
+                  size="M"
+                />)
+              }
 
-            <Card DocData={data} />
-            </div>
+            </ul>
             {/* <ListDoc data={data} /> */}
             <FlexBox
               direction="Row"

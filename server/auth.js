@@ -1,7 +1,6 @@
 const axios = require('axios');
+
 require('dotenv').config();
-
-
 const tokenUrl = process.env.TOKEN_URL
 const clientId = process.env.CLIENT_ID
 const clientSecret = process.env.ClIENT_SECRET

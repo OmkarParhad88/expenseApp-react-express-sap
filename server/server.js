@@ -43,15 +43,13 @@ app.get('/document/data', async (req, res) => {
     // console.log(data)
     const newObject = extractJobData(data);
 
-    res.status(200).json(newObject)
+    res.status(200).json([newObject])
     // res.status(200).json(data)
 
   }).catch(error => {
     console.error('data not availble', error);
     res.status(500).json({ error: 'error got from server' });
   })
-
-
 })
 
 app.post('/document/upload', upload.single('file'), async (req, res) => {
@@ -61,12 +59,13 @@ app.post('/document/upload', upload.single('file'), async (req, res) => {
   const file = req.file;
   const options = req.body;
 
-  const token = await getAuthToken()
-
   const formData = new FormData();
   formData.append('file', file.buffer, file.originalname);
   formData.append('options', JSON.stringify(options));
+
   try {
+    const token = await getAuthToken()
+
     const response = await axios.post(`${doxApiUrl}/document/jobs`, formData, {
     headers: {
       'Authorization': `Bearer ${token}`,

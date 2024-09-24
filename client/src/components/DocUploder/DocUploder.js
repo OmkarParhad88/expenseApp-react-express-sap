@@ -1,5 +1,5 @@
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,11 +9,11 @@ import {
 } from "react-router-dom";
 import {
   Button,
-  FlexBox
+  FlexBox,
+
 } from '@ui5/webcomponents-react';
 import { Loader } from '@ui5/webcomponents-react-compat';
 import axios from 'axios';
-import { dialogSvg } from '@ui5/webcomponents-fiori/dist/illustrations/BeforeSearch.js';
 
 const DocUploder = ({ refreshData }) => {
 
@@ -24,6 +24,10 @@ const DocUploder = ({ refreshData }) => {
 
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  useEffect(() => {
+    refreshBtn()
+  }, [])
+
 
   const refreshBtn = () => {
     setIsLoading(true);

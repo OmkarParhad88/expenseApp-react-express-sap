@@ -23,5 +23,9 @@
   height: 7rem;
   padding: 1rem;
   border-radius: 0.5rem;
+  list-style-type: none;
   box-shadow: var(--_ui5-v2-2-0_side_navigation_box_shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
