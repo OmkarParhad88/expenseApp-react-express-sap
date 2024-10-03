@@ -3,8 +3,9 @@ import React from "react";
 import "./Card.css";
 
 const Card = ({ DocData, editListItem, deleteListItem }) => {
+  console.log(DocData);
   return (
-    <li className="card" id={DocData.docId}>
+    <li className="card" id={DocData.DOCID}>
       <FlexBox
         justifyContent="SpaceBetween"
         alignItems="Center"
@@ -13,24 +14,24 @@ const Card = ({ DocData, editListItem, deleteListItem }) => {
         <div>
           <Text style={{ fontSize: "1.3rem" }}>
             Paid By : <br />
-            {DocData.receiverName}
+            {DocData.RECEIVERNAME}
           </Text>
           <Text>
             Document Date : <br />
-            {DocData.documentDate}
+            {DocData.DOCUMENTDATE}
           </Text>
         </div>
         <div>
-          <Text style={{ fontSize: "1.3rem" }}> Date : {DocData.finished}</Text>
+          <Text style={{ fontSize: "1.3rem" }}> Date : {DocData.FINISHED}</Text>
           <Text>
             fileName : <br />
-            {DocData.fileName}
+            {DocData.FILENAME}
           </Text>
         </div>
 
         <Text style={{ fontSize: "1.3rem" }}>
           Total : <br />
-          {DocData.grossAmount}
+          {DocData.GROSSAMOUNT}
         </Text>
         <div>
           <Button

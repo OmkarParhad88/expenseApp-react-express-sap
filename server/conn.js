@@ -1,27 +1,26 @@
 const hana = require('@sap/hana-client');
+require('dotenv').config();
 
-const conn = hana.createConnection();
+const hanaUrl = process.env.HANA_DB_ENDPOINT_URL
+const port = process.env.HANA_DB_PORT
+const userId = process.env.HANA_DB_USER_ID
+const pass = process.env.HANA_DB_PASS
 
-const connParams = {
-  serverNode: 'hostname:30015',
-  uid: 'your-username',
-  pwd: 'your-password',
-  encrypt: true,        // Optional, for HANA Cloud SSL connection
-  sslValidateCertificate: false,  // Optional, for HANA Cloud
+var connOptions = {
+  serverNode: `${hanaUrl}:${port}`,
+  UID: userId,
+  PWD: pass,
+  encrypt: 'true',
+  sslValidateCertificate: 'false'
 };
 
-conn.connect(connParams, (err) => {
-  if (err) {
-    return console.error('Connection error:', err);
-  }
+var connection = hana.createConnection();
+connection.connect(connOptions);
 
-  conn.exec('SELECT * FROM your_table', (err, rows) => {
-    if (err) {
-      console.error('Execution error:', err);
-    } else {
-      console.log(rows);
-    }
-
-    conn.disconnect();
-  });
-});
+var sql = 'SELECT EmployeeID, FirstName, LastName, BirthDate, HireDate, Salary FROM DBADMIN.Employee;';
+var t0 = performance.now();
+// var result = connection.exec(sql);
+// console.log(util.inspect(result, { colors: false }));
+var t1 = performance.now();
+console.log("time in ms " + (t1 - t0));
+connection.disconnect();

@@ -6,9 +6,9 @@ import {
 } from '@ui5/webcomponents-react';
 
 const ListDoc = ({ data }) => {
-  useEffect(() => {
-    console.log(data)
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(data)
+  // }, [data]);
   return (
     <>
       <AnalyticalTable

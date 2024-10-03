@@ -1,9 +1,9 @@
 const axios = require('axios');
 
 require('dotenv').config();
-const tokenUrl = process.env.TOKEN_URL
-const clientId = process.env.CLIENT_ID
-const clientSecret = process.env.ClIENT_SECRET
+const tokenUrl = process.env.DIE_TOKEN_URL
+const clientId = process.env.DIE_CLIENT_ID
+const clientSecret = process.env.DIE_ClIENT_SECRET
 
 const getAuthToken = async () => {
   const params = new URLSearchParams();

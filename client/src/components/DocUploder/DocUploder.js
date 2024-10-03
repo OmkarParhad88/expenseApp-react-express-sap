@@ -60,6 +60,7 @@ const DocUploder = ({ refreshData }) => {
     setIsLoading(true);
     if (!selectedFile) {
       setErrorMessage('No file selected.');
+      setIsLoading(false)
       return;
     }
 
@@ -74,11 +75,13 @@ const DocUploder = ({ refreshData }) => {
       }
     }).then(response => {
       console.log('File uploaded successfully:')
+      console.log(response)
       handleCancel()
       setIsLoading(false)
       navigate('/')
     }
     ).catch(error => {
+      setIsLoading(false)
       console.error('Error uploading the file:', error);
     })
   }
