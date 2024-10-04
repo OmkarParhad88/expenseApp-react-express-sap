@@ -3,16 +3,16 @@ import React from "react";
 import "./Card.css";
 
 const Card = ({ DocData, editListItem, deleteListItem }) => {
-  console.log(DocData);
+  // console.log(DocData);
   return (
     <li className="card" id={DocData.DOCID}>
       <FlexBox
         justifyContent="SpaceBetween"
         alignItems="Center"
-        flexDirection="Row"
+        style={{ width: "100%" }}
       >
         <div>
-          <Text style={{ fontSize: "1.3rem" }}>
+          <Text className="RECEIVERNAME " style={{ fontSize: "1.3rem" }}>
             Paid By : <br />
             {DocData.RECEIVERNAME}
           </Text>
@@ -30,7 +30,7 @@ const Card = ({ DocData, editListItem, deleteListItem }) => {
         </div>
 
         <Text style={{ fontSize: "1.3rem" }}>
-          Total : <br />
+          Total Amount : <br />
           {DocData.GROSSAMOUNT}
         </Text>
         <div>

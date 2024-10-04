@@ -1,25 +1,18 @@
 
 import { useState, useRef, useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useNavigate
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   FlexBox,
-
 } from '@ui5/webcomponents-react';
 import { Loader } from '@ui5/webcomponents-react-compat';
 import axios from 'axios';
 
 const DocUploder = ({ refreshData }) => {
+  const [isUploaderVisible, setIsUploaderVisible] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
-  const [cancel, setCancel] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -28,18 +21,26 @@ const DocUploder = ({ refreshData }) => {
     refreshBtn()
   }, [])
 
+  const toggleUploader = () => {
+    setIsUploaderVisible(!isUploaderVisible);
+  };
 
   const refreshBtn = () => {
     setIsLoading(true);
     axios.get('http://localhost:5000/document/data')
       .then((response) => {
         console.log('Refresh successful')
-        console.log(response.data)
+        // console.log(response.data)
         refreshData(response.data)
         setIsLoading(false);
       })
       .catch(error => {
-        console.error('Refresh failed', error)
+        console.error('Refresh failed', error.response.data)
+        setIsLoading(false);
+        return {
+          isLoading: false,
+
+        }
       })
   }
 
@@ -89,7 +90,7 @@ const DocUploder = ({ refreshData }) => {
     setIsLoading(false);
     setSelectedFile(null);
     fileInputRef.current.value = '';
-    setCancel(true)
+    setIsUploaderVisible(!isUploaderVisible);
   };
   return (
     <>
@@ -100,20 +101,14 @@ const DocUploder = ({ refreshData }) => {
         height='100%'
         style={{ padding: "0.7em", gap: "0.5rem" }}
       >
-
-        <Routes>
-          <Route path="/document/upload" element={<div style={{ display: "flex", gap: "0.5rem" }}>
+        {isUploaderVisible
+          && (<div style={{ display: "flex", gap: "0.5rem" }}>
             <input type="file" accept=".jpg,.png,.jpeg" onChange={handleFileChange} ref={fileInputRef} />
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-            <Button icon="upload" onClick={handleFileUpload}>Upload</Button>
-            <Link to="/">
-              <Button icon="cancel" type="button" onClick={handleCancel} >Cancel</Button>
-            </Link>
-          </ div>} />
-        </Routes>
-        <Link to="/document/upload">
-          <Button icon="create">Create</Button>
-        </Link>
+          <Button icon="upload" onClick={handleFileUpload}>Upload</Button>
+          <Button icon="cancel" type="button" onClick={handleCancel} >Cancel</Button>
+          </ div>)}
+        {!isUploaderVisible && (<Button icon="create" onClick={toggleUploader}>Create</Button>)}
         <Button icon="refresh" onClick={refreshBtn}>Refresh</Button>
       </FlexBox>
       {isLoading && <Loader progress="60%" type="Indeterminate" />}

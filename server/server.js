@@ -79,7 +79,7 @@ app.get('/document/data', async (req, res) => {
     connection.connect(connOptions);
     let sql = "SELECT * FROM Document_s;";
     let result = connection.exec(sql);
-    console.log(result);
+    // console.log(result);
     connection.disconnect();
     res.status(200).json(result)
   } catch (error) {

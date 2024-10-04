@@ -10,85 +10,94 @@ import { useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  useNavigate
 } from "react-router-dom";
 import DocUploder from './components/DocUploder/DocUploder';
 import Card from './components/Card/Card';
+import EditForm from './components/EditForm/EditForm';
 function App() {
   const [openState, setOpenState] = useState(true)
   const [data, setData] = useState(null)
   const [isData, setIsData] = useState(false)
+  const [id, setId] = useState(null)
 
-  const handleCencel = (e) => {
-    setOpenState(e)
-  }
+  const navigate = useNavigate();
 
   const editListItem = (e) => {
-    const parentListItem = e.target.closest('li').id;
+    const parentListItem = e.target.closest('li');
+    const itemId = parentListItem.id
+    setId(itemId)
+    // console.log(itemId)
     // console.log(parentListItem)
-    console.log(parentListItem)
+
+    let receiveText = parentListItem.querySelector('.RECEIVERNAME').textContent
+    console.log(receiveText);
+    navigate("/document/edit")
+    setTimeout(() => {
+      document.querySelector('.FORMRECEIVERNAME').value = receiveText
+
+    }, 1000)
   }
 
   const deleteListItem = (e) => {
     const parentListItem = e.target.closest('li').id;
+    setId(parentListItem)
     // console.log(parentListItem)
     console.log(parentListItem)
   }
   const fetchData = (e) => {
     setData(e)
-    console.log(e)
+    // console.log(e)
   }
   return (
     <div className="App">
-      <Router>
-        {/* <DataFatch /> */}
-        <Header />
+      {/* <Router> */}
+      <Header />
+      <FlexBox
+        direction="Row"
+        justifyContent="Space-between"
+        wrap="NoWrap"
+        style={{ width: "100%", height: "90%" }}
+      >
+        <SideNavigationBar />
         <FlexBox
-          direction="Row"
-          justifyContent="Space-between"
-          wrap="NoWrap"
-          style={{ width: "100%", height: "90%" }}
+          direction="Column"
+          justifyContent="Start"
+          style={{ height: "100%", width: "100%" }}
         >
-          <SideNavigationBar />
-          <FlexBox
-            direction="Column"
-            justifyContent="Start"
-            style={{ height: "100%", width: "100%" }}
-          >
-            <DocUploder refreshData={fetchData} />
-            <ul className='cards_section'>
+          <Routes>
+            <Route path='/' element={
+              <div>
+                <DocUploder refreshData={fetchData} />
+                <ul className='cards_section'>
+                  {data ? (data.map((e) => { return (<Card key={e.docId} DocData={e} editListItem={editListItem} deleteListItem={deleteListItem} />) }))
+                    : (<BusyIndicator
+                      active
+                      size="M"
+                    />)}
+                </ul>
 
-              {data ? (data.map((e) => { return (<Card key={e.docId} DocData={e} editListItem={editListItem} deleteListItem={deleteListItem} />) }))
-                : (<BusyIndicator
-                  active
-                  size="M"
-                />)
-              }
+                <FlexBox
+                  direction="Row"
+                  justifyContent="End"
+                >
+                  <Button
+                    icon="document"
+                    type="Button"
+                  >
+                    Report
+                  </Button>
+                </FlexBox>
+              </div>
+            } />
 
-            </ul>
-            {/* <ListDoc data={data} /> */}
-            <FlexBox
-              direction="Row"
-              justifyContent="End"
-            >
-              <Button
-                accessibilityAttributes={{}}
-                accessibleRole="Button"
-                design="Emphasized"
-                disabled={false}
-                icon="document"
-                onClick={function _s() { }}
-                type="Button"
-                style={{ margin: "1rem" }}
 
-              >
-                Report
-              </Button>
-            </FlexBox>
-          </FlexBox>
+            <Route path='/document/edit' element={<EditForm />} />
+          </Routes>
         </FlexBox>
-        {/* <DocData /> */}
-      </Router>
+      </FlexBox>
+      {/* </Router> */}
     </div>
   );
 }
