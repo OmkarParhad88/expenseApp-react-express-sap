@@ -19,8 +19,8 @@ connection.connect(connOptions);
 
 var sql = 'SELECT EmployeeID, FirstName, LastName, BirthDate, HireDate, Salary FROM DBADMIN.Employee;';
 var t0 = performance.now();
-// var result = connection.exec(sql);
-// console.log(util.inspect(result, { colors: false }));
+var result = connection.exec(sql);
+console.log(util.inspect(result, { colors: false }));
 var t1 = performance.now();
 console.log("time in ms " + (t1 - t0));
 connection.disconnect();

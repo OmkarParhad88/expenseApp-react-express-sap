@@ -26,25 +26,28 @@ const DocUploder = ({ refreshData }) => {
   };
 
   const refreshBtn = () => {
+    setErrorMessage('');
     setIsLoading(true);
     axios.get('http://localhost:5000/document/data')
       .then((response) => {
         console.log('Refresh successful')
+        setErrorMessage('Refresh successful');
         // console.log(response.data)
         refreshData(response.data)
         setIsLoading(false);
       })
       .catch(error => {
         console.error('Refresh failed', error.response.data)
+        setErrorMessage(error.response.data.error);
         setIsLoading(false);
-        return {
-          isLoading: false,
-
-        }
+        // return {
+        //   isLoading: false,
+        // }
       })
   }
 
   const handleFileChange = (event) => {
+    setErrorMessage('');
     const file = event.target.files[0];
     if (file) {
       const fileType = file.type;
@@ -58,6 +61,7 @@ const DocUploder = ({ refreshData }) => {
   };
 
   const handleFileUpload = async () => {
+    setErrorMessage('');
     setIsLoading(true);
     if (!selectedFile) {
       setErrorMessage('No file selected.');
@@ -75,15 +79,17 @@ const DocUploder = ({ refreshData }) => {
         'Content-Type': 'multipart/form-data',
       }
     }).then(response => {
-      console.log('File uploaded successfully:')
-      console.log(response)
+      console.log('File uploaded successfully ')
+      setErrorMessage('File uploaded successfully');
+      // console.log(response)
       handleCancel()
       setIsLoading(false)
       navigate('/')
     }
     ).catch(error => {
       setIsLoading(false)
-      console.error('Error uploading the file:', error);
+      console.error('Error uploading the file : ', error);
+      setErrorMessage('Error uploading the file');
     })
   }
   const handleCancel = () => {
@@ -101,17 +107,18 @@ const DocUploder = ({ refreshData }) => {
         height='100%'
         style={{ padding: "0.7em", gap: "0.5rem" }}
       >
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         {isUploaderVisible
           && (<div style={{ display: "flex", gap: "0.5rem" }}>
             <input type="file" accept=".jpg,.png,.jpeg" onChange={handleFileChange} ref={fileInputRef} />
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+
           <Button icon="upload" onClick={handleFileUpload}>Upload</Button>
           <Button icon="cancel" type="button" onClick={handleCancel} >Cancel</Button>
           </ div>)}
         {!isUploaderVisible && (<Button icon="create" onClick={toggleUploader}>Create</Button>)}
         <Button icon="refresh" onClick={refreshBtn}>Refresh</Button>
       </FlexBox>
-      {isLoading && <Loader progress="60%" type="Indeterminate" />}
+      {isLoading && <Loader type="Indeterminate" />}
     </>
   )
 }

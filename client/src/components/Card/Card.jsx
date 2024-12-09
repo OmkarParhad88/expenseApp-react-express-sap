@@ -12,8 +12,9 @@ const Card = ({ DocData, editListItem, deleteListItem }) => {
         style={{ width: "100%" }}
       >
         <div>
+          <Text> Paid By : </Text>
           <Text className="RECEIVERNAME " style={{ fontSize: "1.3rem" }}>
-            Paid By : <br />
+            {/* <br /> */}
             {DocData.RECEIVERNAME}
           </Text>
           <Text>

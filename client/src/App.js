@@ -1,11 +1,8 @@
 
 import { FlexBox, Button, BusyIndicator } from '@ui5/webcomponents-react';
 import './App.css';
-// import DataFatch from './components/DataFatch/DataFatch';
 import Header from './components/Header/Header';
 import SideNavigationBar from './components/SideNavigationBar/SideNavigationBar';
-import ListDoc from './components/ListDoc/ListDoc';
-// import DocToolbar from './components/DocToolbar/DocToolbar';
 import { useState } from 'react';
 import {
   BrowserRouter as Router,
@@ -36,7 +33,6 @@ function App() {
     navigate("/document/edit")
     setTimeout(() => {
       document.querySelector('.FORMRECEIVERNAME').value = receiveText
-
     }, 1000)
   }
 
@@ -64,7 +60,7 @@ function App() {
         <FlexBox
           direction="Column"
           justifyContent="Start"
-          style={{ height: "100%", width: "100%" }}
+          style={{ height: "100%", width: "100%" }} 
         >
           <Routes>
             <Route path='/' element={

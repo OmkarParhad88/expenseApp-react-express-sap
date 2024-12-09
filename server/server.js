@@ -46,12 +46,12 @@ const extractDocData = (data) => {
 
   return {
     docId,
-    receiverName,
-    documentDate,
-    documentType,
-    fileName,
-    grossAmount,
-    finished
+    receiverName: (receiverName) ? receiverName : "Name is not available",
+    documentDate: (documentDate) ? documentDate : "0000-00-00",
+    documentType: (documentType) ? documentType : "invoice",
+    fileName: (fileName) ? fileName : "image.jpg",
+    grossAmount: (grossAmount) ? grossAmount : "0.00",
+    finished: (docId) ? docId : "0000-00-00"
   };
 };
 
@@ -75,7 +75,7 @@ const getJobData = async (jobId) => {
 
 app.get('/document/data', async (req, res) => {
   try {
-    // get data from hana table
+    // get data from hana table 
     connection.connect(connOptions);
     let sql = "SELECT * FROM Document_s;";
     let result = connection.exec(sql);
@@ -118,14 +118,16 @@ app.post('/document/upload', upload.single('file'), async (req, res) => {
     }
 
     if (data.status === "DONE") {
+      console.log(data.extraction.headerFields)
       const jobData = extractDocData(data);
       // console.log(jobData)
       try {
+        console.log(jobData)
         // insert into hana table
         connection.connect(connOptions);
-        let sql = `INSERT INTO Document_s(docId, receiverName, documentDate, documentType, fileName, grossAmount, finished)VALUES('${jobData.docId}', '${jobData.receiverName}','${jobData.documentDate}', '${jobData.documentType}', '${jobData.fileName}',${jobData.grossAmount}, '${jobData.finished}');`;
+        let sql = `INSERT INTO Document_s(docId, receiverName, documentDate, documentType, fileName, grossAmount, finished)VALUES('${jobData.docId}', '${jobData.receiverName}', '${jobData.documentDate}', '${jobData.documentType}', '${jobData.fileName}',${jobData.grossAmount}, '${jobData.finished}');`;
 
-        // console.log(sql)
+        console.log(sql)
         let result = connection.exec(sql);
         console.log(result);
         connection.disconnect();
